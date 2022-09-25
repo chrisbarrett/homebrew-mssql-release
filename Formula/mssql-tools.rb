@@ -14,8 +14,10 @@ class MssqlTools < Formula
   option "accept-eula", "Accept the EULA at http://go.microsoft.com/fwlink/?LinkId=746949"
 
   def install
-    if build.without? "accept-eula" then
-      puts 'Must specify --accept-eula to proceed. EULA: http://go.microsoft.com/fwlink/?LinkId=746949'
+    if build.with? "accept-eula" then
+      puts 'EULA accepted for mssql-tools'
+    else
+      STDERR.puts 'Must specify --accept-eula to proceed. EULA: http://go.microsoft.com/fwlink/?LinkId=746949'
       return false
     end
 

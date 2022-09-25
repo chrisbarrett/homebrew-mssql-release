@@ -14,8 +14,10 @@ class Msodbcsql17 < Formula
   depends_on "openssl"
 
   def install
-    if build.without? "accept-eula" then
-      puts 'Must specify --accept-eula to proceed. EULA: http://go.microsoft.com/fwlink/?LinkId=746949'
+    if build.with? "accept-eula" then
+      puts 'EULA accepted for msodbcsql17'
+    else
+      STDERR.puts 'Must specify --accept-eula to proceed. EULA: https://aka.ms/odbc17eula'
       return false
     end
 
