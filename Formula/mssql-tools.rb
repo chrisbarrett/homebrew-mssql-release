@@ -9,15 +9,15 @@ class MssqlTools < Formula
 
   depends_on "unixodbc"
   depends_on "openssl"
-  depends_on "msodbcsql17" => "accept-eula" if build.with? "accept-eula"
+  depends_on "msodbcsql17" => "with-accept-eula" if build.with? "accept-eula"
 
-  option "accept-eula", "Accept the EULA at http://go.microsoft.com/fwlink/?LinkId=746949"
+  option "with-accept-eula", "Accept the EULA at http://go.microsoft.com/fwlink/?LinkId=746949"
 
   def install
     if build.with? "accept-eula" then
       puts 'EULA accepted for mssql-tools'
     else
-      STDERR.puts 'Must specify --accept-eula to proceed. EULA: http://go.microsoft.com/fwlink/?LinkId=746949'
+      STDERR.puts 'Must specify --with-accept-eula to proceed. EULA: http://go.microsoft.com/fwlink/?LinkId=746949'
       return false
     end
 

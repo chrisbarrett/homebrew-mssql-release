@@ -8,7 +8,7 @@ class Msodbcsql17 < Formula
                                         "490811ea713eab189d9c9cb9aa7cd0e37f0ace3de0c204f9aff14a43909351df"
 
   option "without-registration", "Don't register the driver in odbcinst.ini"
-  option "accept-eula", "Accept the EULA at https://aka.ms/odbc17eula"
+  option "with-accept-eula", "Accept the EULA at https://aka.ms/odbc17eula"
 
   depends_on "unixodbc"
   depends_on "openssl"
@@ -17,7 +17,7 @@ class Msodbcsql17 < Formula
     if build.with? "accept-eula" then
       puts 'EULA accepted for msodbcsql17'
     else
-      STDERR.puts 'Must specify --accept-eula to proceed. EULA: https://aka.ms/odbc17eula'
+      STDERR.puts 'Must specify --with-accept-eula to proceed. EULA: https://aka.ms/odbc17eula'
       return false
     end
 
