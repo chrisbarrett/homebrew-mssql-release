@@ -9,7 +9,7 @@ class MssqlTools < Formula
 
   depends_on "unixodbc"
   depends_on "openssl"
-  depends_on "msodbcsql17"
+  depends_on "msodbcsql17" => "accept-eula" if build.with? "accept-eula"
 
   option "accept-eula", "Accept the EULA at http://go.microsoft.com/fwlink/?LinkId=746949"
 
@@ -18,7 +18,6 @@ class MssqlTools < Formula
       puts 'Must specify --accept-eula to proceed. EULA: http://go.microsoft.com/fwlink/?LinkId=746949'
       return false
     end
-    ENV['HOMEBREW_ACCEPT_EULA'] = 'y'
 
     chmod 0444, "bin/sqlcmd"
     chmod 0444, "bin/bcp"

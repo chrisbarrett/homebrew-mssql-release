@@ -8,43 +8,16 @@ class Msodbcsql17 < Formula
                                         "490811ea713eab189d9c9cb9aa7cd0e37f0ace3de0c204f9aff14a43909351df"
 
   option "without-registration", "Don't register the driver in odbcinst.ini"
-
+  option "accept-eula", "Accept the EULA at https://aka.ms/odbc17eula"
 
   depends_on "unixodbc"
   depends_on "openssl"
 
-  def check_eula_acceptance?
-    if ENV["HOMEBREW_ACCEPT_EULA"] != "y" && ENV["HOMEBREW_ACCEPT_EULA"] != "Y"
-      puts "The license terms for this product can be downloaded from"
-      puts "https://aka.ms/odbc17eula and found in"
-      puts "/usr/local/share/doc/msodbcsql17/LICENSE.txt . By entering 'YES',"
-      puts "you indicate that you accept the license terms."
-      puts ""
-      loop do
-        puts "Do you accept the license terms? (Enter YES or NO)"
-        accept_eula = STDIN.gets.chomp
-        if accept_eula
-          if accept_eula.casecmp("YES").zero?
-            break
-          elsif accept_eula.casecmp("NO").zero?
-            puts "Installation terminated: License terms not accepted."
-            return false
-          else
-            puts "Please enter YES or NO"
-          end
-        else
-          puts "Installation terminated: Could not prompt for license acceptance."
-          puts "If you are performing an unattended installation, you may set"
-          puts "HOMEBREW_ACCEPT_EULA to Y to indicate your acceptance of the license terms."
-          return false
-        end
-      end
-    end
-    true
-  end
-
   def install
-    return false unless check_eula_acceptance?
+    if build.without? "accept-eula" then
+      puts 'Must specify --accept-eula to proceed. EULA: http://go.microsoft.com/fwlink/?LinkId=746949'
+      return false
+    end
 
     chmod 0444, "lib/libmsodbcsql.17.dylib"
     chmod 0444, "share/msodbcsql17/resources/en_US/msodbcsqlr17.rll"
