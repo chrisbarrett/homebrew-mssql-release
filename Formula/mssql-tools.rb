@@ -11,37 +11,14 @@ class MssqlTools < Formula
   depends_on "openssl"
   depends_on "msodbcsql17"
 
-  def check_eula_acceptance?
-    if ENV["HOMEBREW_ACCEPT_EULA"] != "y" && ENV["HOMEBREW_ACCEPT_EULA"] != "Y"
-      puts "The license terms for this product can be downloaded from"
-      puts "http://go.microsoft.com/fwlink/?LinkId=746949 and found in"
-      puts "/usr/local/share/doc/mssql-tools/LICENSE.txt . By entering 'YES',"
-      puts "you indicate that you accept the license terms."
-      puts ""
-      loop do
-        puts "Do you accept the license terms? (Enter YES or NO)"
-        accept_eula = STDIN.gets.chomp
-        if accept_eula
-          break if accept_eula.casecmp("YES").zero?
-          if accept_eula.casecmp("NO").zero?
-            puts "Installation terminated: License terms not accepted."
-            return false
-          else
-            puts "Please enter YES or NO"
-          end
-        else
-          puts "Installation terminated: Could not prompt for license acceptance."
-          puts "If you are performing an unattended installation, you may set"
-          puts "HOMEBREW_ACCEPT_EULA to Y to indicate your acceptance of the license terms."
-          return false
-        end
-      end
-    end
-    true
-  end
+  option "accept-eula", "Accept the EULA at http://go.microsoft.com/fwlink/?LinkId=746949"
 
   def install
-    return false unless check_eula_acceptance?
+    if build.without? "accept-eula" then
+      puts 'Must specify --accept-eula to proceed. EULA: http://go.microsoft.com/fwlink/?LinkId=746949'
+      return false
+    end
+    ENV['HOMEBREW_ACCEPT_EULA'] = 'y'
 
     chmod 0444, "bin/sqlcmd"
     chmod 0444, "bin/bcp"
